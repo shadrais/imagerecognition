@@ -1,10 +1,16 @@
-import React from 'react';
+import React , { Component } from 'react';
 import './App.css';
 import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
 import Navigation from "./Components/Navigation/Navigation";
 import Logo from "./Components/Logo/Logo";
 import Imagelinkfom from './Components/ImageLinkForm/Imagelinkform'
 import Rank from "./Components/Rank/Rank";
+import Facerecognition from "./Components/Facerecognition/Facerecognition";
+
+const app = new Clarifai.App({
+    apiKey: '7e71dc7bece44af5af44b63e369c4422'
+});
 
 const particleOptions = {
     particles: {
@@ -113,19 +119,46 @@ const particleOptions = {
     retina_detect: true
 }
 
-function App() {
-  return (
-    <div className="App">
-        <Particles className="particles"
-            params={particleOptions}
-        />
-      <Navigation />
-      <Logo />
-        <Rank />
-      <Imagelinkfom />
 
-    </div>
-  );
+
+class App extends Component{
+
+    constructor() {
+        super();
+        this.state = {
+            input :     '',
+            imageUrl : '',
+        }
+    }
+    onInputChange = (event) => {
+        this.setState({input : event.target.value});
+    }
+    onButtonSubmit = () => {
+        this.setState({imageUrl : this.state.input})
+        app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+            function(response) {
+                console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
+            },
+            function(err) {
+                // there was an error
+            }
+        );
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Particles className="particles"
+                           params={particleOptions}
+                />
+                <Navigation/>
+                <Logo/>
+                <Rank/>
+                <Imagelinkfom onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+                <Facerecognition imageUrl={this.state.imageUrl}/>
+            </div>
+        );
+    }
 }
 
 
