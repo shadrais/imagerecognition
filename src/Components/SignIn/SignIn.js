@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-class SignIn extends React.Component
+class SignIn extends  React.Component
 {
     constructor(props){
         super(props);
@@ -27,14 +27,22 @@ class SignIn extends React.Component
           })
 
       })
-        this.props.onRouteChange('home');
+      .then(res => res.json())
+    .then(data => {
+          if(data === 'error logging in')
+          {
+            this.props.onRouteChange('home');
+          }
+      })
+       
+     
     }
 
     render()
     {
         const {onRouteChange} = this.props;
         return (
-            <div className="br3 ba  b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
+            <article className="br3 ba  b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
                 <main className="pa4 black-80">
                     <form className="measure">
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -71,7 +79,7 @@ class SignIn extends React.Component
                         </div>
                     </form>
                 </main>
-            </div>
+            </article>
     
         );
     }
