@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/imagerecognition/v16/.suo
+.gitignore
