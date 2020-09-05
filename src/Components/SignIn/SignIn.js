@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class SignIn extends React.Component
 {
@@ -26,8 +26,15 @@ class SignIn extends React.Component
               password: this.state.signinPassword
           })
 
+      }).then(response => response.json())
+      .then(data => {
+          if(data === 'success')
+          {
+            this.props.onRouteChange('home');
+          }
       })
-        this.props.onRouteChange('home');
+      
+       
     }
 
     render()
@@ -61,7 +68,7 @@ class SignIn extends React.Component
                         <div className="">
                             <input
                                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                                type="submit"
+                                type="button"
                                 value="Sign in"
                                 onClick={this.onSubmitSignin}
                                  />
